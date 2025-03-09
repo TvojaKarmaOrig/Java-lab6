@@ -48,7 +48,8 @@ public class Field extends JPanel {
     public void addBall() {
         //Заключается в добавлении в список нового экземпляра BouncingBall
         // Всю инициализацию положения, скорости, размера, цвета
-// BouncingBall выполняет сам в конструкторе 
+// BouncingBall выполняет сам в конструкторе
+        if(balls.size() == 1) balls.removeFirst();
         balls.add(new BouncingBall(this));
     }
     // Метод синхронизированный, т.е. только один поток может
