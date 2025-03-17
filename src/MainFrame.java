@@ -39,7 +39,7 @@ public class MainFrame extends JFrame {
         // Создать меню
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
-        JMenu ballMenu = new JMenu("Мячи");
+        JMenu objectMenu = new JMenu("Объекты");
         Action addBallAction = new AbstractAction("Добавить мяч") {
             public void actionPerformed(ActionEvent event) {
                 field.addBall();
@@ -48,12 +48,19 @@ public class MainFrame extends JFrame {
                     // Ни один из пунктов меню не являются
 // доступными - сделать доступным "Паузу"
                     pauseMenuItem.setEnabled(true);
-
+                    this.setEnabled(false);
                 }
             }
         };
-        menuBar.add(ballMenu);
-        ballMenu.add(addBallAction);
+        Action addBrickAction = new AbstractAction("Добавить кирпич") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                field.addBrick();
+            }
+        };
+        menuBar.add(objectMenu);
+        objectMenu.add(addBallAction);
+        objectMenu.add(addBrickAction);
         JMenu controlMenu = new JMenu("Управление");
         menuBar.add(controlMenu);
         Action pauseAction = new AbstractAction("Приостановить движение"){

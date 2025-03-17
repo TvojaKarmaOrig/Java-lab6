@@ -15,6 +15,7 @@ public class BouncingBall implements Runnable {
     private int radius;
     private Color color;
 
+    private static int ind = 0;
     // Текущие координаты мяча
     private double x;
     private double y;
@@ -70,6 +71,46 @@ public class BouncingBall implements Runnable {
 // возвращено в метод
                 // В противном случае - активный поток заснѐт
                 field.canMove(this);
+
+                for(Brick brick : field.getBricks()) {
+                    if (x + speedX <= radius + brick.getPosX() + Brick.WIDTH && x + speedX >= brick.getPosX() &&
+                            y + speedY <= brick.getPosY() + Brick.HEIGHT && y +speedY >= brick.getPosY() ) {
+                        // Достигли левой стенки, отскакиваем право
+                        speedX = -speedX;
+                        x = radius + brick.getPosX() + Brick.WIDTH;
+                        brick.punch();
+                        ind++;
+                        System.out.println("Collision " + Integer.toString(ind));
+                    } else
+                    if (x + speedX >= brick.getPosX() - radius &&  x + speedX <= brick.getPosX() + Brick.WIDTH  &&
+                            y + speedY <= brick.getPosY() + Brick.HEIGHT && y +speedY >= brick.getPosY()) {
+                        // Достигли правой стенки, отскок влево
+                        speedX = -speedX;
+                        x = brick.getPosX() - radius;
+                        brick.punch();
+                        ind++;
+                        System.out.println("Collision" + Integer.toString(ind));
+                    } else
+                    if (y + speedY >= brick.getPosY() - radius &&  y + speedY <= brick.getPosY() + Brick.HEIGHT  &&
+                            x + speedX <= brick.getPosX() + Brick.WIDTH && x + speedX >= brick.getPosX()) {
+                        // Достигли верхней стенки
+                        speedY = -speedY;
+                        y = brick.getPosY() - radius;
+                        brick.punch();
+                        ind++;
+                        System.out.println("Collision" + Integer.toString(ind));
+                    } else
+                    if (y + speedY <= radius + brick.getPosY() + Brick.HEIGHT && y + speedY >= brick.getPosY() &&
+                            x + speedX <= brick.getPosX() + Brick.WIDTH && x +speedX >= brick.getPosX() ) {
+                        // Достигли нижней стенки
+                        speedY = -speedY;
+                        y = radius + brick.getPosY() + Brick.HEIGHT;
+                        brick.punch();
+                        ind++;
+                        System.out.println("Collision" + Integer.toString(ind));
+                    }
+                }
+
                 if (x + speedX <= radius) {
                     // Достигли левой стенки, отскакиваем право
                     speedX = -speedX;
@@ -94,6 +135,7 @@ public class BouncingBall implements Runnable {
                     x += speedX;
                     y += speedY;
                 }
+
                 // Засыпаем на X миллисекунд, где X определяется
 // исходя из скорости
                 // Скорость = 1 (медленно), засыпаем на 15 мс.
